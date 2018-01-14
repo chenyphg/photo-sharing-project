@@ -1,0 +1,52 @@
+
+<head>
+    <title>Upload a photo!</title>
+</head>
+    <body>
+    <h4>{{ message }}</h4>
+        <div class="title">
+            <h1>Upload a photo to Photoshare</h1>
+        </div>
+        {% if uploadPhoto %}
+        {{ uploadPhoto }}
+            <form method="post" enctype="multipart/form-data" action="/upload">
+                <br>
+                <label for="photo">Select photo:</label>
+                <input type="file" name="photo" required='true' /><br /><br>
+                <label for="caption">Please caption:</label>
+                <input type="text" name="caption" required='true' /><br /><br>
+                please pick an album
+                <select name="select_album" id="select_album" required>
+                    {% for album in viewAlbum %}
+
+                    <option value="{{ album }}">{{ album }}</option>
+
+                    {% endfor %}
+                </select>
+                <br><br>
+                <label for="tag">Please tag:</label>
+                <input type="text" name="tag" placeholder="split by comma, no space please" />
+                <br><br>
+
+                <input type="submit" value="Upload" />
+
+
+
+            </form>
+        <br>
+        <br>
+        {% endif %}
+
+
+        {% if createAlbum %}
+        <div>
+            <h1>lets create album</h1>
+            <form method="post" enctype="multipart/form-data" action="/createAlbum">
+                <input type="text" name="album_name" required="true" placeholder="please enter album name"/>
+                <input type="submit" value="create">
+            </form>
+        </div>
+        {% endif %}
+
+
+    </body>

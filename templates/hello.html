@@ -1,0 +1,66 @@
+<!-- author xu chen (chenyphg@bu.edu) -->
+<!doctype html>
+{% if message %}
+<h3>{{message}}!</h3>
+{% endif %}
+<title>Photoshare</title>
+{% if name %}
+<h1>Hello {{ name }}!</h1>
+{% endif %}
+
+{% if photos %}
+<h2>Here's your photos</h2>
+
+    <p>hint: all your albums are listed in dropdown<br>if the album you selected is empty, the app will return to home page<br>
+    please go back to profile then re-enter the page if you create or delete a photo or album <br> For unknown reason, if delete album
+    doesn't work by one click, you can re-click profile, then delete the album again. It will be gone for sure.</p>
+
+
+<form method="post" enctype="multipart/form-data" action="/delete">
+
+    <select name="select_album" id="select_album">
+        <option value="view_all">view all</option>
+        {% for album in viewAlbum %}
+        <option value="{{ album }}">{{ album }}</option>
+        view by albums
+        {% endfor %}
+        <br><br>
+
+        <br>
+        <input type="submit" name="method" value="View By Album"/>
+        <input type="submit" name="method" value="Delete by Album"/>
+    </select>
+
+    <ul>
+        <br>
+        {% for photo in photos %}
+        <li><b>{{photo[2]}}</b> from album <b>{{ photo[1] }}</b><br>
+            <br>
+
+            <img style="height:500px;max-width:500px;);" src='data:image/png;base64, {{photo[0]}}'/><br>
+            delete it <input type="submit" name="deleteObject" value="{{photo[3]}}">
+            <br><br><br>
+        </li>
+        {% endfor %}
+    </ul>
+</form>
+{% endif %}
+
+{% if message is none %}
+<p>You should <a href='/login'>login!</a></p>
+{% else %}
+<p> Go to <a href='/profile'>profile?</a></p> login to upload photos, comments, and share with your friends!
+{% endif %}
+
+
+<ul>
+    <li><a href="/search_photo"><h3>Explore photos!</h3></a></li>
+    <li><a href='/createAlbum'>Create a new album</a></li>
+    <li><a href='/upload'>Upload Photos</a></li>
+    <li><a href='/search_photo'>Search by Tag</a></li>
+    <li><a href='/'>Home</a></li>
+    <li><a href='/friends'>View friends</a></li>
+    <li><a href='/logout'>Logout</a></li>
+
+</ul>
+

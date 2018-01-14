@@ -1,0 +1,145 @@
+<!doctype html>
+<head>
+    <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+    <title>view friend list</title>
+</head>
+
+{% if message %}
+    <h1>{{ message }}</h1>
+{% endif %}
+
+<a href="viewallphotos"><h3>view all photos</h3></a>
+
+{% if view_all_photos %}
+    {% for photo in view_all_photos %}
+        <li><b>{{ photo[1] }}</b> from album <b>{{ search_photo }}</b><br>
+            <form method="post" action="/viewallphotos">
+                <img style="height:500px;max-width:500px;);" src='data:image/png;base64, {{ photo[0] }}'/><br>
+
+                <br><select name="info" id="info">
+                <option value="likes">likes</option>
+                <option value="information">information</option>
+                <option value="tag">tags</option>
+                <option value="comment">comments</option>
+                <input type="submit" name="submit" value={{ photo[2] }}>check info<br>
+            </select>
+            </form>
+            <br>
+        </li>
+    {% endfor %}
+
+{% endif %}
+<!-- lets view friends list -->
+{% if viewFriends %}
+    <h2>followings are names of your friends</h2>
+    {% for friendName in viewFriends %}
+        <li>{{ friendName }}</li>
+    {% endfor %}
+
+    <br>
+    <form method="post" action="/friends">
+        lets add new friends<br><input type="email" name="new email" placeholder="enter email of your friends" required>
+        <input type="submit" value="add friend!">
+    </form>
+
+{% endif %}
+
+<!-- search photos section -->
+{% if search_photo %}
+    <a href='/youmaylike'>you may like</a>
+    <h2>search photos by keyword (tag)</h2>
+    <form method="post" action="/search_photo">
+        <input type="text" name="keyword" placeholder="plit by comma, no space please" size="30" required>
+        <input type="text" name="user_email" placeholder="if you want to specify user" size="20">
+        <input type="submit" value="search"><br><br><br>
+    </form>
+    {% if score_for_all_users %}
+        <table width=40% align="left">
+            <h3>Top 10 Active Users</h3>
+            <tr>
+                <th>User Id</th>
+                <th>User name</th>
+                <th>Current Score</th>
+            </tr>
+            {% for each_score in score_for_all_users %}
+                <tr>
+                    <td>{{ each_score[0] }}</td>
+                    <td>{{ each_score[1] }}</td>
+                    <td>{{ each_score[2] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+    {% endif %}
+
+    {% if popular_tag_list %}
+        <h3>Top 10 Popular Tags</h3>
+        <table width="30%" align="left">
+            <tr>
+                <th>Tag ID</th>
+                <th>Tag content</th>
+                <th>Frequency</th>
+            </tr>
+            {% for tag in popular_tag_list %}
+                <tr>
+                    <td>{{ tag[0] }}</td>
+                    <td>{{ tag[1] }}</td>
+                    <td>{{ tag[2] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br><br>
+    {% endif %}
+
+    {% if search_result %}
+        {% for photo in search_result %}
+            <li><b>{{ photo[1] }}</b> from album <b>{{ search_photo }}</b><br>
+
+                <img style="height:500px;max-width:500px;);" src='data:image/png;base64, {{ photo[0] }}'/><br>
+                <br>
+                {% if comments %}
+                    <h3>COMMENTS</h3>
+                    {{ comments }}
+                {% endif %}
+                <form method="post" action="/comment">
+                    <br><input type="text" name="comment" placeholder="please leave comment for **{{ photo[1] }}**"
+                               size="50" required>
+                    <input type="submit" name="submit" value={{ photo[3] }}>submit<br>
+                </form>
+                <br>
+            </li>
+        {% endfor %}
+    {% endif %}
+
+{% endif %}
+
+
+<ul>
+    <li><a href='/createAlbum'>Create a new album</a></li>
+    <li><a href='/upload'>Upload Photos</a></li>
+    <li><a href='/'>Home</a></li>
+    <li><a href='/logout'>Logout</a></li>
+
+</ul>
+
+
+</body>
+</html>
